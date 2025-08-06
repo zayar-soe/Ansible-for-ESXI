@@ -16,7 +16,7 @@
 
     - name: Install ESXi patch
       ansible.builtin.shell: >
-        esxcli software vib install -d {{ patch_file }}
+        esxcli software vib install -d {{ patch_file }} --no-sig-check --force
       register: patch_output
 
     - name: Show patch result

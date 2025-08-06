@@ -1,6 +1,6 @@
 ---
 - name: Check current ESXi version
-  hosts: esxi
+  hosts: ESXI-01
   gather_facts: no
   become: false
 

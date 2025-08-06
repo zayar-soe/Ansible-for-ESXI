@@ -1,0 +1,29 @@
+
+---
+- name: Patch standalone ESXi host via SSH
+  hosts: ESXI-01
+  gather_facts: no
+  become: false
+  vars:
+    patch_file: /vmfs/volumes/6893b9e6-9527bcc9-6011-000c29ba9331/VMware-ESXi-7.0U3s-24585291-depot.zip
+
+  tasks:
+    - name: Reboot ESXi host
+      ansible.builtin.shell: reboot
+      async: 1
+      poll: 0
+
+    - name: Wait for ESXi host to reboot
+      wait_for:
+        host: "{{ ansible_host }}"
+        port: 22
+        delay: 300
+        timeout: 600
+        state: started
+
+    - name: Exit maintenance mode
+      ansible.builtin.shell: vim-cmd hostsvc/maintenance_mode_exit
+      register: exit_mm
+
+    - name: Confirm maintenance mode exited
+      debug: var=exit_mm.stdout

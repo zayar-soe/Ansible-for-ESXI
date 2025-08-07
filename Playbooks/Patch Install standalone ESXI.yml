@@ -27,14 +27,6 @@
       async: 1
       poll: 0
 
-    - name: Wait for ESXi host to reboot
-      wait_for:
-        host: "{{ ansible_host }}"
-        port: 22
-        delay: 300
-        timeout: 600
-        state: started
-
     - name: Reboot ESXi host
       ansible.builtin.shell: reboot
       async: 1

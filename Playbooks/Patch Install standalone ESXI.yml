@@ -35,6 +35,15 @@
         timeout: 600
         state: started
 
+    - name: Reboot ESXi host
+      ansible.builtin.shell: reboot
+      async: 1
+      poll: 0
+      
+    - name: Wait 90 seconds before checking SSH
+      pause:
+        seconds: 300
+
     - name: Exit maintenance mode
       ansible.builtin.shell: vim-cmd hostsvc/maintenance_mode_exit
       register: exit_mm

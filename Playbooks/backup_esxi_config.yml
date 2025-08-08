@@ -41,8 +41,6 @@
   gather_facts: no
   become: false
   vars:
-    ansible_connection: ssh
-    ansible_python_interpreter: "none"
     backup_file: /tmp/configBundle-esxi.host.domain.tgz
   tasks:
     - name: Copy backup file from controller to ESXi host

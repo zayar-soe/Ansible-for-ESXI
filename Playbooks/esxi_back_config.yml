@@ -7,24 +7,19 @@
     patch_file: /vmfs/volumes/6893b9e6-9527bcc9-6011-000c29ba9331/VMware-ESXi-8.0U3e-24674464-depot.zip
     
   tasks:
-    - name: Ensure artifact path exists
-      ansible.builtin.file:
-        path: /runner/project/artifacts
-        state: directory
-        mode: '0755'
-      delegate_to: localhost
+
     - name: Save the ESXi configuration locally by authenticating directly against the ESXi host
       community.vmware.vmware_cfg_backup:
         hostname: '{{ ansible_host }}'
         username: '{{ ansible_user }}'
         password: '{{ ansible_password }}'
         state: saved
-        dest: /runner/project/artifacts/configBundle-esxi01.tgz
+        dest: /tmp/configBundle-esxi01.tgz
         validate_certs: false
       delegate_to: localhost
 
     - name: Copy backup from EE to controller
       fetch:
-        src: /runner/project/artifacts/configBundle-esxi01.tgz
+        src: /tmp/configBundle-esxi01.tgz
         dest: ./downloads/
         flat: yes

@@ -1,6 +1,7 @@
 ---
 - name: Patch standalone ESXi host via API and save backup locally
-  hosts: localhost
+  hosts: ESXI-01
+  connection: local
   gather_facts: no
   become: false
   vars:

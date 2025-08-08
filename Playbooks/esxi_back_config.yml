@@ -14,6 +14,12 @@
         username: '{{ ansible_user }}'
         password: '{{ ansible_password }}'
         state: saved
-        dest: /tmp/
+        dest: /runner/project/artifacts/
         validate_certs: false
       delegate_to: localhost
+
+    - name: Copy backup from EE to controller
+      fetch:
+        src: /runner/project/artifacts/esxi-backup.tgz
+        dest: ./downloads/
+        flat: yes

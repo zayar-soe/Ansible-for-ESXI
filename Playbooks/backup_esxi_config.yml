@@ -42,7 +42,6 @@
   become: false
   vars:
     ansible_connection: ssh
-    ansible_shell_type: sh
     ansible_python_interpreter: "none"
     backup_file: /tmp/configBundle-esxi.host.domain.tgz
   tasks:

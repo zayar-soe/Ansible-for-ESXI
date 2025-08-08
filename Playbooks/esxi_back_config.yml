@@ -3,12 +3,14 @@
   hosts: ESXI-01
   gather_facts: no
   become: false
-
+  vars:
+    patch_file: /vmfs/volumes/6893b9e6-9527bcc9-6011-000c29ba9331/VMware-ESXi-8.0U3e-24674464-depot.zip
+    
   tasks:
 
     - name: Save the ESXi configuration locally by authenticating directly against the ESXi host
       community.vmware.vmware_cfg_backup:
-        hostname: '{{ esxi }}'
+        hostname: '{{ ansible_host }}'
         state: saved
         dest: /tmp/
       delegate_to: localhost

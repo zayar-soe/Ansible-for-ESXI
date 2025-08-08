@@ -15,4 +15,5 @@
         password: '{{ ansible_password }}'
         state: saved
         dest: /tmp/
+        validate_certs: false
       delegate_to: localhost

@@ -13,7 +13,7 @@
         username: '{{ ansible_user }}'
         password: '{{ ansible_password }}'
         state: saved
-        dest: 
+        dest: '{{ backup_file }}'
         validate_certs: false
       delegate_to: localhost
 

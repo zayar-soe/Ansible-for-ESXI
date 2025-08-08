@@ -58,6 +58,7 @@
   tasks:
     - name: Put host in maintenance mode
       ansible.builtin.shell: vim-cmd hostsvc/maintenance_mode_enter
+      delegate_to: localhost
       register: enter_mm
 
     - name: Confirm maintenance mode entered
@@ -79,6 +80,7 @@
 
     - name: Exit maintenance mode
       ansible.builtin.shell: vim-cmd hostsvc/maintenance_mode_exit
+      delegate_to: localhost
       register: exit_mm
 
     - name: Confirm maintenance mode exited

@@ -48,7 +48,14 @@
         src: "/runner/artifacts/{{ tower_job_id }}/configBundle-esxi.host.domain.tgz"
         dest: "{{ backup_file }}"
       delegate_to: localhost
+      
+    - name: Put host in maintenance mode
+      ansible.builtin.shell: vim-cmd hostsvc/maintenance_mode_enter
+      register: enter_mm
 
+    - name: Confirm maintenance mode entered
+      debug: var=enter_mm.stdout
+      
     - name: Restore the ESXi configuration from backup file
       community.vmware.vmware_cfg_backup:
         hostname: '{{ ansible_host }}'
@@ -58,3 +65,14 @@
         src: '{{ backup_file }}'
         validate_certs: false
       delegate_to: localhost
+      
+    - name: Wait 90 seconds before checking SSH
+      pause:
+        seconds: 90
+
+    - name: Exit maintenance mode
+      ansible.builtin.shell: vim-cmd hostsvc/maintenance_mode_exit
+      register: exit_mm
+
+    - name: Confirm maintenance mode exited
+      debug: var=exit_mm.stdout

@@ -13,14 +13,13 @@
         username: '{{ ansible_user }}'
         password: '{{ ansible_password }}'
         state: saved
-        dest: /tmp/configBundle-esxi01.tgz
+        dest: 
         validate_certs: false
-      delegate_to: 192.168.204.7
+      delegate_to: localhost
 
     - name: Confirm backup file was saved
       stat:
-        path: /tmp/configBundle-esxi01.tgz
-      delegate_to: 192.168.204.7
+        path: "{{ backup_file }}'
       register: backup_file_info
 
     - name: Show backup status

@@ -19,7 +19,7 @@
 
     - name: Confirm backup file was saved
       stat:
-        path: "{{ backup_file }}'
+        path: '{{ backup_file }}'
       register: backup_file_info
 
     - name: Show backup status

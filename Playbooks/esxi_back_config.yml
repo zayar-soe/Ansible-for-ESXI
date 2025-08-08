@@ -18,8 +18,11 @@
         validate_certs: false
       delegate_to: localhost
 
-    - name: Copy backup from EE to controller
-      fetch:
-        src: /runner/project/.ansible/tmp/configBundle-esxi01.tgz
-        dest: ./downloads/
-        flat: yes
+    - name: Confirm backup file was saved
+      stat:
+        path: /runner/project/.ansible/tmp/configBundle-esxi01.tgz
+      register: backup_file_info
+
+    - name: Show backup status
+      debug:
+        msg: "Backup saved: {{ backup_file_info.stat.exists }}"

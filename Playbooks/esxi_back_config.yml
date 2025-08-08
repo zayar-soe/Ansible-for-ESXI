@@ -15,6 +15,7 @@
         state: saved
         dest: '{{ backup_file }}'
         validate_certs: false
+      delegate_to: localhost
 
     - name: Confirm backup file was saved
       stat:

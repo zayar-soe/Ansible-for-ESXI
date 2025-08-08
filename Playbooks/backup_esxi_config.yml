@@ -52,7 +52,10 @@
 - name: Restore ESXi configuration from backup
   hosts: ESXI-01
   gather_facts: no
-  become: false      
+  become: false    
+  vars:
+    backup_file: /tmp/configBundle-esxi.host.domain.tgz
+  tasks:
     - name: Put host in maintenance mode
       ansible.builtin.shell: vim-cmd hostsvc/maintenance_mode_enter
       register: enter_mm

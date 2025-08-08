@@ -31,3 +31,9 @@
     - name: Show backup status
       debug:
         msg: "Backup saved: {{ backup_file_info.stat.exists }}"
+        
+    - name: Move backup file to artifacts directory inside EE container
+      ansible.builtin.command:
+        cmd: mv /tmp/configBundle-esxi.host.domain.tgz /runner/artifacts/{{ tower_job_id }}/configBundle-esxi.host.domain.tgz
+      delegate_to: localhost
+

@@ -49,6 +49,10 @@
         dest: "{{ backup_file }}"
       delegate_to: localhost
       
+- name: Restore ESXi configuration from backup
+  hosts: ESXI-01
+  gather_facts: no
+  become: false      
     - name: Put host in maintenance mode
       ansible.builtin.shell: vim-cmd hostsvc/maintenance_mode_enter
       register: enter_mm

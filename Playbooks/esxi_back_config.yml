@@ -14,12 +14,12 @@
         username: '{{ ansible_user }}'
         password: '{{ ansible_password }}'
         state: saved
-        dest: /tmp/configBundle-localhost.localdomain.tgz
+        dest: /runner/project/artifacts/configBundle-esxi01.tgz
         validate_certs: false
       delegate_to: localhost
 
     - name: Copy backup from EE to controller
       fetch:
-        src: /tmp/configBundle-localhost.localdomain.tgz
+        src: /runner/project/artifacts/configBundle-esxi01.tgz
         dest: ./downloads/
         flat: yes

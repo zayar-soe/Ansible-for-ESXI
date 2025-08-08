@@ -41,6 +41,9 @@
   gather_facts: no
   become: false
   vars:
+    ansible_connection: ssh
+    ansible_shell_type: sh
+    ansible_python_interpreter: "none"
     backup_file: /tmp/configBundle-esxi.host.domain.tgz
   tasks:
     - name: Copy backup file from controller to ESXi host
@@ -49,20 +52,20 @@
         dest: "{{ backup_file }}"
       delegate_to: localhost
       
-- name: Restore ESXi configuration from backup
-  hosts: ESXI-01
-  gather_facts: no
-  become: false    
-  vars:
-    backup_file: /tmp/configBundle-esxi.host.domain.tgz
-  tasks:
     - name: Put host in maintenance mode
       ansible.builtin.shell: vim-cmd hostsvc/maintenance_mode_enter
       register: enter_mm
 
     - name: Confirm maintenance mode entered
       debug: var=enter_mm.stdout
-      
+
+- name: Restore ESXi configuration from backup
+  hosts: ESXI-01
+  gather_facts: no
+  become: false 
+  vars:
+    backup_file: /tmp/configBundle-esxi.host.domain.tgz
+  tasks:
     - name: Restore the ESXi configuration from backup file
       community.vmware.vmware_cfg_backup:
         hostname: '{{ ansible_host }}'

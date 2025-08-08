@@ -17,11 +17,3 @@
         validate_certs: false
       delegate_to: localhost
 
-    - name: Confirm backup file was saved
-      stat:
-        path: '{{ backup_file }}'
-      register: backup_file_info
-
-    - name: Show backup status
-      debug:
-        msg: "Backup saved: {{ backup_file_info.stat.exists }}"

@@ -16,12 +16,13 @@
         validate_certs: false
       delegate_to: localhost
 
-- name: Confirm backup file was saved locally
+- name: Confirm backup file was saved locally and move to artifacts
   hosts: localhost
   gather_facts: no
   become: false
   vars:
     backup_file: /tmp/configBundle-esxi.host.domain.tgz
+    artifact_file: /runner/artifacts/{{ tower_job_id }}/configBundle-esxi.host.domain.tgz
   tasks:
     - name: Confirm backup file was saved
       stat:
@@ -31,9 +32,29 @@
     - name: Show backup status
       debug:
         msg: "Backup saved: {{ backup_file_info.stat.exists }}"
-        
+
     - name: Move backup file to artifacts directory inside EE container
-      ansible.builtin.command:
-        cmd: mv /tmp/configBundle-esxi.host.domain.tgz /runner/artifacts/{{ tower_job_id }}/configBundle-esxi.host.domain.tgz
+      command: mv "{{ backup_file }}" "{{ artifact_file }}"
+
+- name: Restore ESXi configuration from backup
+  hosts: ESXI-01
+  gather_facts: no
+  become: false
+  vars:
+    backup_file: /tmp/configBundle-esxi.host.domain.tgz
+  tasks:
+    - name: Copy backup file from controller to ESXi host
+      ansible.builtin.copy:
+        src: "/runner/artifacts/{{ tower_job_id }}/configBundle-esxi.host.domain.tgz"
+        dest: "{{ backup_file }}"
       delegate_to: localhost
 
+    - name: Restore the ESXi configuration from backup file
+      community.vmware.vmware_cfg_backup:
+        hostname: '{{ ansible_host }}'
+        username: '{{ ansible_user }}'
+        password: '{{ ansible_password }}'
+        state: restored
+        src: '{{ backup_file }}'
+        validate_certs: false
+      delegate_to: localhost

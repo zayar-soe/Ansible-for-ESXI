@@ -16,4 +16,11 @@
         dest: '{{ backup_file }}'
         validate_certs: false
 
+    - name: Confirm backup file was saved
+      stat:
+        path: '{{ backup_file }}'
+      register: backup_file_info
 
+    - name: Show backup status
+      debug:
+        msg: "Backup saved: {{ backup_file_info.stat.exists }}"

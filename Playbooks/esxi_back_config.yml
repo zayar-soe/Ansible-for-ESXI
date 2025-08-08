@@ -4,7 +4,7 @@
   gather_facts: no
   become: false
   vars:
-    backup_file: /runner/project/.ansible/tmp/configBundle-esxi01.tgz
+    backup_file: /runner/artifacts/{{ tower_job_id }}/configBundle-esxi01.tgz
   tasks:
 
     - name: Save the ESXi configuration locally by authenticating directly against the ESXi host

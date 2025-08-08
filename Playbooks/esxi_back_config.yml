@@ -4,8 +4,7 @@
   gather_facts: no
   become: false
   vars:
-    patch_file: /vmfs/volumes/6893b9e6-9527bcc9-6011-000c29ba9331/VMware-ESXi-8.0U3e-24674464-depot.zip
-    
+    backup_file: /runner/project/.ansible/tmp/configBundle-esxi01.tgz
   tasks:
 
     - name: Save the ESXi configuration locally by authenticating directly against the ESXi host
@@ -14,13 +13,14 @@
         username: '{{ ansible_user }}'
         password: '{{ ansible_password }}'
         state: saved
-        dest: /runner/project/.ansible/tmp/configBundle-esxi01.tgz
+        dest: /tmp/configBundle-esxi01.tgz
         validate_certs: false
-      delegate_to: localhost
+      delegate_to: 192.168.204.7
 
     - name: Confirm backup file was saved
       stat:
-        path: /runner/project/.ansible/tmp/configBundle-esxi01.tgz
+        path: /tmp/configBundle-esxi01.tgz
+      delegate_to: 192.168.204.7
       register: backup_file_info
 
     - name: Show backup status

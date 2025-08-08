@@ -14,7 +14,7 @@
         username: '{{ ansible_user }}'
         password: '{{ ansible_password }}'
         state: saved
-        dest: /runner/project/artifacts/
+        dest: /runner/project/artifacts/configBundle-localhost.localdomain.tgz
         validate_certs: false
       delegate_to: localhost
 

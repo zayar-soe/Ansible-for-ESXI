@@ -1,0 +1,26 @@
+---
+- name: Patch standalone ESXi host via API and save backup locally
+  hosts: localhost
+  gather_facts: no
+  become: false
+  vars:
+    backup_file: /tmp/configBundle-esxi.host.domain.tgz
+
+  tasks:
+    - name: Save the ESXi configuration locally by authenticating directly against the ESXi host
+      community.vmware.vmware_cfg_backup:
+        hostname: '{{ esxi_hostname }}'
+        username: '{{ esxi_username }}'
+        password: '{{ esxi_password }}'
+        state: saved
+        dest: '{{ backup_file }}'
+        validate_certs: false
+
+    - name: Confirm backup file was saved
+      stat:
+        path: '{{ backup_file }}'
+      register: backup_file_info
+
+    - name: Show backup status
+      debug:
+        msg: "Backup saved: {{ backup_file_info.stat.exists }}"

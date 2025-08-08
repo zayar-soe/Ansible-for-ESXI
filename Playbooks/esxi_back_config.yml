@@ -1,0 +1,14 @@
+---
+- name: Patch standalone ESXi host via SSH
+  hosts: esxi
+  gather_facts: no
+  become: false
+
+  tasks:
+
+    - name: Save the ESXi configuration locally by authenticating directly against the ESXi host
+      community.vmware.vmware_cfg_backup:
+        hostname: '{{ esxi }}'
+        state: saved
+        dest: /tmp/
+      delegate_to: localhost

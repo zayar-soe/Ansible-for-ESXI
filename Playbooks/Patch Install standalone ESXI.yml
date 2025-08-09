@@ -26,11 +26,6 @@
       ansible.builtin.shell: reboot
       async: 1
       poll: 0
-
-    - name: Reboot ESXi host
-      ansible.builtin.shell: reboot
-      async: 1
-      poll: 0
       
     - name: Wait 180 seconds before checking SSH
       pause:

@@ -32,9 +32,9 @@
       async: 1
       poll: 0
       
-    - name: Wait 90 seconds before checking SSH
+    - name: Wait 180 seconds before checking SSH
       pause:
-        seconds: 300
+        seconds: 180
 
     - name: Exit maintenance mode
       ansible.builtin.shell: vim-cmd hostsvc/maintenance_mode_exit
